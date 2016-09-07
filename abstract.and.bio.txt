@@ -1,0 +1,8 @@
+Writing and managing R packages
+
+Do you often find yourself copying and pasting old code into new scripts?  Are you frequently using source() to load shared code and wonder if there is a better way?  Would you like to make your code easier for others (and yourself) to use?  Then it is time to write your first R package!
+
+From the point of view of starting a new project, I will show you how you can use R packages to make your code easier to manage, use and share with others.  Packages can be as simple as a single file of R functions, all the way to a full-blown piece of software complete with documentation, tests, data and examples.  You don't need to use all of the functionality in order to benefit from using an R package.  I will show you how to manage your code and development process easily when using R packages, and how to take advantage of the more advanced functionality as your project matures.
+
+
+Damjan Vukcevic is a statistician and data scientist at the University of Melbourne and the Murdoch Childrens Research Institute (MCRI).  He works on research in statistical genetics and biostatistics, including studying mutations in immune system genes and their effect on disease risk.  R is his go-to tool for statistical modelling and data analysis.  He wishes someone introduced him to R packages many years ago.

@@ -1,0 +1,183 @@
+---
+title       : Writing and managing R packages
+subtitle    : 13 Sep 2016, Melbourne Users of R Network (MelbURN)
+author      : Damjan Vukcevic
+job         : Statistician & data scientist
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+Why this talk?
+
+- Important topic
+- A lot has changed since 2011 (the last MelbURN talk about R packages)
+
+
+What is an R package?
+
+> "Packages are the fundamental units of reproducible R code." (Hadley Wickham)
+
+
+Why R packages?
+
+- Easier management, re-use and sharing of code
+- Helpful even just for yourself
+* Saves time
+
+    - Follow conventions, to avoid having to think about plumbing all the time
+    - Quick, easier re-use
+    - Quicker, easier, sharing
+
+* Easy to create!  (...with a little help from Hadley)
+
+> "I really should just make an R package with these functions so I don't have
+to keep copy/pasting them like a goddamn luddite." (Hilary Parker)
+
+> "R packages are the best way to distribute R code and documentation..." (Karl
+Broman)
+
+
+`functions.R` --- The poor man's R package
+
+
+Your first R package
+
+1. Create folder structure
+2. Move `functions.R` into it
+3. Add `DESCRIPTION`
+4. Add `NAMESPACE`
+
+    ```
+    # Export all names
+    exportPattern(".")
+    ```
+
+5. Install
+6. Use!
+
+
+Advantages (package vs `functions.R`)
+
+    * Easier to re-use
+    * Easier to share
+    * Easier to maintain as complexity increases
+
+        - Can split seamlessly into multiple files
+        - Can version track separately
+        - Can add extra stuff: documentation, tests,... (see later)
+
+
+`devtools`
+
+```
+create()
+```
+
+
+New (package-based, `devtools`-based) workflow
+
+* Main idea: use `load_all()` instead of `source()`
+
+```
+# Development
+dev_mode()
+setwd()  -- ?
+load_all()
+    Repeat!
+
+# Installation (dev mode)
+document()
+Update DESCRIPTION
+check()
+install()
+
+# Installation (normal mode)
+undo dev_mode()
+install()
+```
+
+* Any personal tips?
+
+
+Documentation
+
+
+Some important (advanced) concepts
+
+* Namespaces (exporting)
+* Dependencies
+* Lazy loading
+
+
+Levelling up
+
+* Testing
+* Data & examples
+* Vignettes
+* CRAN
+
+
+Tips & tricks, other stuff
+
+* Difference between `library()` and `require()`
+
+
+Sharing your R package
+
+* What to do before sharing
+* Where to share
+* How to share
+* GitHub
+
+
+Managing R packages (yours or others)
+
+* Installing packages
+
+    - Locally (e.g. your own)
+    - From CRAN
+    * `install.packages()` or `R CMD INSTALL` or `install_*` (`devtools`)
+    - From GitHub
+
+* Finding all dependencies and installing them
+
+    - `reinstallr()`
+
+* Upgrading packages
+
+    * `update.packages()`
+    * `reinstallr` package
+    * Upgrading all packages after a major R upgrade (CRAN packages only)
+
+        - `update.packages(checkBuilt=TRUE, ask=FALSE)`
+
+* Viewing man pages for packages
+
+
+Tips for using RStudio and packages
+
+* <https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development>
+
+
+Where to go for more help
+
+* [Writing an R package from scratch][hilary], Hilary Parker
+* [R packages][hadley], Hadley Wickham **(the ultimate modern guide)**
+* [R package primer][broman], Karl Broman
+* [Writing R Extensions][R-exts], R Core Team **(best to avoid...)**
+
+[hilary]: https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+[broman]: http://kbroman.org/pkg_primer/
+[hadley]: http://r-pkgs.had.co.nz/
+[R-exts]: https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+
+
+Useful packages
+
+* [devtools](https://github.com/hadley/devtools)
+* [reinstallr](https://github.com/calligross/reinstallr)
+* [installr](https://github.com/talgalili/installr/) (Windows only)

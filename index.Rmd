@@ -3,6 +3,7 @@ title       : Writing and managing R packages
 subtitle    : 13 Sep 2016, Melbourne Users of R Network (MelbURN)
 author      : Damjan Vukcevic
 job         : Statistician & data scientist
+logo        : Rlogo_scaled.png
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : monokai

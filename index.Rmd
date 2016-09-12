@@ -410,32 +410,35 @@ Use `run_examples()` to verify your examples work
 
 > - Invoke functions from other packages using `package::function()`
 
-> - List all such external packages under `Imports` in the `DESCRIPTION`  
-Easy way: `use_package("package")`  
-This will ensure these packages are installed when your own one is
+> - List all such external packages in the `Imports` section of the
+`DESCRIPTION` file
 
-> - If the package is not very essential, list under `Suggests` instead  
-Easy way: `use_package("package", "Suggests")`  
-This doesn't force users to install it, but alerts them to extra functionality
-if they do
+> - This will ensure these packages are installed along with
+your package
+
+> - Easy way: run `use_package("package")` in your R session
+
 
 ---
 
 ## Dependencies
 
-R code:
+Write R code:
+
 ```{r eval=FALSE}
 #' Plot Error Bars and Confidence Intervals
 plotCI <- function(..., sfrac = 0,     gap = 0,   pch = 19)
     gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch)
 ```
 
-Declare dependency:
+Declare dependency (in an R session):
+
 ```{r eval=FALSE}
 use_package("gplots")
 ```
 
-`DESCRIPTION` now says:
+The `DESCRIPTION` now says:
+
 ```
 Package: mypackage
 Title: This is my first R package
@@ -540,11 +543,13 @@ Consider the following:
 
 ---
 
-## Some topics not covered today
+## Topics not covered today
 
 * Dealing with more complex objects: classes, methods, etc.
 * [Types of packages](http://r-pkgs.had.co.nz/package.html#package)
-  (source, bundled, binary, etc.)
+  (source, bundled, binary,...)
+* [Types of dependencies](http://r-pkgs.had.co.nz/description.html#dependencies)
+  (Imports, Suggests, Depends,...)
 * [Namespace imports](http://r-pkgs.had.co.nz/namespace.html#imports)
 * [Text formatting](http://r-pkgs.had.co.nz/man.html#text-formatting) in
   documentation

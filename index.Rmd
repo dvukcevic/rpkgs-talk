@@ -58,9 +58,12 @@ Don't need to learn everything at once
 ## Overview
 
 1. Your first R package
+
 2. Efficient workflow
-2. Next steps (documentation, dependencies, sharing your package)
-3. Managing packages
+
+3. Improving and sharing your package
+
+4. Managing packages
 
 ---
 
@@ -189,7 +192,7 @@ R CMD INSTALL mypackage
 
 Use your new package in R:
 
-```{r results="hold"}
+```{r}
 library(mypackage)
 square(1:3)
 resample(letters[1:10])
@@ -269,41 +272,47 @@ Use           | `source("functions.R")`   | `library("mypackage")`
 
 ## Development workflow
 
-1. Edit code
-2. `load_all("mypackage")`
-3. Try out your code
-4. Repeat until happy
-5. `install("mypackage")`
+1. Edit code in `R` subfolder
+
+2. In an R session:
+
+    (a) `load_all("mypackage")`
+
+    (b) Test out your functions
+
+3. Repeat until happy
+
+4. `install("mypackage")`
 
 ---
 
 ## Documentation
 
-Help pages are accessed by using `?` or  `help()`
+> - Help pages are accessed by using `?` or  `help()`
 
-For example: `?read.table`
+> - For example: `?read.table`
 
-R packages should provide help pages as well as code
+> - R packages should provide help pages as well as code
 
-R packages follow specific conventions for documentation.  These used to be
+> - R packages follow specific conventions for documentation.  These used to be
 difficult to follow
 
-`roxygen2` allows you to write documentation as *inline comments* in your `.R`
-files
+> - `roxygen2` allows you to write documentation as *inline comments* in your
+`.R` files
 
-`devtools` makes the whole process easy
+> - `devtools` makes the whole process easy
 
 ---
 
 ## Writing basic `roxygen2` comments
 
-Place comments directly above your code
+> - Place comments directly above your code
 
-Use ``#` `` instead of `#`
+> - Use ``#` `` instead of `#`
 
-Write 3 blocks of text: Title, Description, Details
+> - First 3 blocks of text: Title, Description, Details
 
-Include the `@export` tag (will explain later...)
+> - Include the `@export` tag (will explain later...)
 
 ---
 
@@ -335,10 +344,16 @@ resample <- function(x, ...)
 ## Documentation workflow
 
 1. Edit `roxygen2` comments
-2. `document("mypackage")`
-3. Inspect documentation using `?`
-4. Repeat until happy
-5. `install("mypackage")`
+
+2. In an R session:
+
+    (a) `document("mypackage")`
+
+    (b) Inspect help pages using `?`
+
+3. Repeat until happy
+
+4. `install("mypackage")`
 
 ---
 
@@ -358,8 +373,11 @@ if (interactive())
 ## Next steps
 
 * More documentation
+
 * Dependencies (imports)
+
 * Namespaces (exports)
+
 * Sharing your package
 
 ---
@@ -377,14 +395,16 @@ Some standard sections for function definitions:
 
 ---
 
-## More documentation
+## Example
 
 ```{r eval=FALSE}
 #' Resampling
 #'
+#' \code{resample} takes a random sample from a given vector.
+#'
+#' @export
 #' @param x   A vector of elements from which to sample.
 #' @param ... Further arguments passed to \code{sample}.
-#'
 #' @return A vector of elements drawn from \code{x}.
 #'
 #' @seealso \code{\link[base]{sample}}
@@ -398,9 +418,36 @@ resample <- function(x, ...)
 
 ---
 
+## Example output
+
+![Screenshot of man page](manpage2.png)
+
+---
+
 ## Checking your examples
 
-Use `run_examples()` to verify your examples work
+Use `run_examples()` to verify that your examples work
+
+---
+
+## Examples example
+
+```{r eval=FALSE}
+> library(devtools)
+> run_examples("mypackage")
+Updating mypackage documentation
+Loading mypackage
+Writing resample.Rd
+Running 3 example files in mypackage ------------------------------
+Loading mypackage
+Running examples in resample.Rd -----------------------------------
+> 
+> resample(5:10)  # same as sample(5:10)
+[1]  5  9  6 10  8  7
+> resample(5)     # NOT the same as sample(5)
+[1] 5
+Loading mypackage
+```
 
 ---
 
@@ -418,7 +465,6 @@ your package
 
 > - Easy way: run `use_package("package")` in your R session
 
-
 ---
 
 ## Dependencies
@@ -431,7 +477,7 @@ plotCI <- function(..., sfrac = 0,     gap = 0,   pch = 19)
     gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch)
 ```
 
-Declare dependency (in an R session):
+In an R session, declare the dependency:
 
 ```{r eval=FALSE}
 use_package("gplots")
@@ -450,13 +496,20 @@ Imports: gplots
 
 ## Visibility to end users
 
-`NAMESPACE` defines which functions will be available to users of the package
+> - `NAMESPACE` defines which functions will be available to users of the package
 
-Typically best to only expose the 'high-level' functions
+> - Typically best to only expose the 'high-level' functions
+
+> - This is called 'exporting' the function
+
+---
+
+## Visibility to end users
 
 Workflow:
 
-1. Mark such functions with the `@export` tag
+1. Add the `@export` tag to desired functions
+
 2. Use `document()` to automatically create `NAMESPACE`
 
 ---
@@ -520,7 +573,7 @@ Alternatives: [GitLab](https://about.gitlab.com/), [Bitbucket](https://bitbucket
 
 Easiest options:
 
-* Simply zip up your package folder ('source' package)
+* Zip up your package folder ('source' package)
 * `build("mypackage")` ('bundled' package)
 
 Then send to colleagues, post on websites, etc.
@@ -567,7 +620,7 @@ See [Hadley Wickham's guide][hadley] for more details
 
 ---
 
-## The complete workflow
+## A complete workflow
 
 1. `create()`
 2. Write code, `load_all()`, fix & repeat
@@ -608,9 +661,13 @@ Examples: `randomForest`, `lme4`, `forecast`
 ## Managing R packages
 
 * Installing
+
 * Upgrading
+
 * Finding and installing dependencies
+
 * Re-installing packages after a major R upgrade
+
 * Where are R packages installed?
 
 ---
@@ -640,10 +697,17 @@ update_packages("package")
 ## Upgrading (all) packages
 
 Quick and easy:
-`update_packages()` from `devtools`
+
+```{r eval=FALSE}
+library(devtools)
+update_packages()
+```
 
 For more fine-grained control:
-`update.packages()`
+
+```{r eval=FALSE}
+update.packages()
+```
 
 ---
 
@@ -680,7 +744,7 @@ A 'library' is a folder for storing installed packages
 .libPaths()
 ```
 
-This command is sometimes useful for debugging your R installation
+This can be useful for debugging your R installation
 
 ---
 

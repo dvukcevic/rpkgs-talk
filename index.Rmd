@@ -11,10 +11,10 @@ mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 --- .segue .quote
 
+Hilary Parker:
+
 <q>I really should just make an R package with these functions so I don't have
 to keep copy/pasting them like a goddamn luddite.</q>
-
-(Hilary Parker)
 
 ---
 
@@ -240,7 +240,7 @@ package
 
 Highly recommended!
 
-Grab the kit:
+Grab the whole kit:
 
 ```{r eval=FALSE}
 install.packages(c("devtools", "roxygen2", "testthat", "knitr"))

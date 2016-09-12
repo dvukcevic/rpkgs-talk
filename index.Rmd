@@ -13,13 +13,6 @@ knit        : slidify::knit2slides
 license     : by-sa
 --- .segue .quote
 
-<style>
-.tight {
-    margin-top:    1em;
-    margin-bottom: 0  ;
-}
-</style>
-
 Hilary Parker:
 
 <q>I really should just make an R package with these functions so I don't have

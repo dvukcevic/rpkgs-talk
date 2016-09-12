@@ -643,19 +643,19 @@ See [Hadley Wickham's guide][hadley] for more details
 Package up your code in a way that best promotes re-use:
 
 > - Generic but frequently used code  
---> personal/miscellaneous utility package  
+→ Personal/miscellaneous utility package  
 Examples: `gplots`, `Hmisc`, `rafalib`
 
 > - Standalone utility code specific to a context (e.g. data parsing)  
---> specific utility package  
+→ Specific utility package  
 Examples: `devtools`, `ggplot2`, `data.table`, `stringr`
 
 > - General modelling code  
---> modelling package  
+→ Modelling package  
 Examples: `randomForest`, `lme4`, `forecast`
 
 > - Project code  
---> project package
+→ Project package
 
 ---
 

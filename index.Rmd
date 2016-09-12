@@ -9,41 +9,100 @@ hitheme     : tomorrow      #
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+--- .segue .quote
+
+<q>I really should just make an R package with these functions so I don't have
+to keep copy/pasting them like a goddamn luddite.</q>
+
+(Hilary Parker)
+
 ---
 
 ## What is an R package?
 
-> "Packages are the fundamental units of reproducible R code." (Hadley Wickham)
+"Packages are the fundamental units of reproducible R code." (Hadley Wickham)
+
+"R packages are the best way to distribute R code and documentation..." (Karl
+Broman)
 
 ---
 
 ## Why R packages?
 
-- Easier management, re-use and sharing of code
+* Save time
 
-- Helpful even just for yourself
+    - Follow conventions, avoid having to think about 'plumbing'
+    - Quick & easy re-use
+    - Quick & easy sharing
 
-* Saves time
+* Better code
 
-    - Follow conventions, to avoid having to think about plumbing all the time
-    - Quick, easier re-use
-    - Quicker, easier, sharing
+    - Easier check & test
+    - Easier to document
+    * Tidier namespaces
 
-* Easy to create!  (...with a little help from Hadley)
+* Easy to create
+
+- Helpful even when writing code just for yourself
 
 ---
 
-> "I really should just make an R package with these functions so I don't have
-to keep copy/pasting them like a goddamn luddite." (Hilary Parker)
+## General advice
 
-> "R packages are the best way to distribute R code and documentation..." (Karl
-Broman)
+Start slowly
+
+Don't need to learn everything at once
+
+---
+
+## Overview
+
+1. Your first R package
+2. Efficient workflow
+2. Next steps (documentation, dependencies, sharing your package)
+3. Managing packages
 
 ---
 
 ## `functions.R`, the poor man's R package
 
-(Show example here...)
+1. Place function definitions in a file called `functions.R`
+
+2. Load this in other scripts using `source("function.R")`
+
+---
+
+## Examples
+
+In `functions.R`:
+```
+# Calculate the square of x.
+square <- function(x)
+    x^2
+```
+
+In your R session:
+```{r}
+source("functions.R")
+square(1:3)
+```
+
+---
+
+## Examples
+
+In `functions.R`:
+```{r eval=FALSE}
+# Resample values from a given vector.
+resample <- function(x, ...)
+    x[sample.int(length(x), ...)]
+```
+
+In your R session:
+```{r}
+source("functions.R")
+resample(letters[1:10])
+```
 
 ---
 
@@ -89,7 +148,16 @@ mypackage/
 Your `DESCRIPTION` file should look similar to:
 
 ```
-...
+Package: mypackage
+Title: This is my first R package
+Description: This package was created as a way to learn how to write R
+    packages. It contains various helper functions and variable definitions.
+Authors@R: person("First", "Last", email = "first.last@example.com",
+                  role = c("aut", "cre"))
+Version: 0.1
+Depends: R (>= 3.3.1)
+License: GPL-3
+LazyData: true
 ```
 
 ---
@@ -121,204 +189,543 @@ R CMD INSTALL mypackage
 
 Use your new package in R:
 
-```
+```{r results="hold"}
 library(mypackage)
-dostuff(x)
+square(1:3)
+resample(letters[1:10])
 ```
 
 ---
 
-## Benefits (package vs `functions.R`)
+## Your first R package
+
+Can split up your code into any number of `.R` files
+
+```
+mypackage/
+├── R/
+│   ├── resample.R
+│   └── square.R
+├── DESCRIPTION
+└── NAMESPACE
+```
+
+All `.R` files within the `R` subfolder will automatically be included in your
+package
+
+(More convenient than if `source()`-ing)
+
+
+---
+
+## Benefits of packages (vs `functions.R`)
 
 * Easier to re-use
 * Easier to share
 * Easier to maintain as complexity increases
-
-    - Can split seamlessly into multiple files
-    - Can version track separately
-    - Can add extra stuff: documentation, tests,... (see later)
+* Better documentation
+* Cleaner project code
 
 ---
 
-## Easy development with `devtools`
+## Modern development toolkit
 
-```
-create()
-```
+* `devtools`: Hadley Wickham's R package for 'painless package development'
+* `roxygen2`: In-source documentation system
+* `testthat`: 'Tools to make testing fun :)'
+* `knitr`: Dynamic report generation
 
----
+Highly recommended!
 
-## A package-based workflow
+Grab the kit:
 
-* Use `devtools`
-
-* Main idea: during interactive development, use `load_all("mypackage")`
-instead of `source("functions.R")`
-
----
-
-## A package-based workflow
-
-```
-# Development
-dev_mode()
-setwd()  -- ?
-load_all()
-    Repeat!
+```{r eval=FALSE}
+install.packages(c("devtools", "roxygen2", "testthat", "knitr"))
 ```
 
 ---
 
-## A package-based workflow
+## Using `devtools`
 
+Starting a new package:
+
+```{r eval=FALSE}
+library(devtools)
+create("mypackage")
 ```
-# Installation (dev mode)
-document()
-Update DESCRIPTION
-check()
-install()
-```
+
+This sets up the basic folder structure and files (`DESCRIPTION`, etc.)
 
 ---
 
-## A package-based workflow
+## Workflow comparison
 
-```
-# Installation (normal mode)
-undo dev_mode()
-install()
-```
+              | Old way                   | New way
+------------- | ------------------------- | -------------------------
+Development   | `source("functions.R")`   | `load_all("mypackage")`
+Use           | `source("functions.R")`   | `library("mypackage")`
 
 ---
 
-## A package-based workflow
+## Development workflow
 
-* Any personal tips?
+1. Edit code
+2. `load_all("mypackage")`
+3. Try out your code
+4. Repeat until happy
+5. `install("mypackage")`
 
 ---
 
 ## Documentation
 
-(Need examples here...)
+Help pages are accessed by using `?` or  `help()`
+
+For example: `?read.table`
+
+R packages should provide help pages as well as code
+
+R packages follow specific conventions for documentation.  These used to be
+difficult to follow
+
+`roxygen2` allows you to write documentation as *inline comments* in your `.R`
+files
+
+`devtools` makes the whole process easy
 
 ---
 
-## Some important (advanced) concepts
+## Writing basic `roxygen2` comments
 
-* Namespaces (exporting)
-* Dependencies
-* Lazy loading
+Place comments directly above your code
 
----
+Use ``#` `` instead of `#`
 
-## Tips & tricks, other stuff
+3 blocks of text: Title, Description, Details
 
-* Difference between `library()` and `require()`
-* Invoke function from other packages using `package::function()`
+Document everything (functions, data, classes, methods,...)
 
 ---
 
-## Levelling up
+## Example
 
-* Data & examples
-* Vignettes
-* Testing
+```{r eval=FALSE}
+#' Resampling
+#'
+#' \code{resample} takes a random sample from a given vector.
+#'
+#' This function is an alternative to \code{sample}.  Unlike the latter, it
+#' always interprets the first argument as the set of elements to sample from,
+#' even when it is of length 1.  This consistency makes it more suitable for
+#' programmatic use.
+resample <- function(x, ...)
+    x[sample.int(length(x), ...)]
+```
+
+---
+
+## Example output
+
+![Screenshot of man page](manpage1.png)
+
+---
+
+## Documentation workflow
+
+1. Edit `roxygen2` comments
+2. `document("mypackage")`
+3. Inspect documentation using `?`
+4. Repeat until happy
+5. `install("mypackage")`
+
+---
+
+## Tips
+
+Remember to run `library(devtools)` before doing any development.
+
+Hadley recommends adding it to your startup file (`.Rprofile`):
+
+```{r eval=FALSE}
+if (interactive())
+    suppressMessages(require(devtools))
+```
+
+---
+
+## Next steps
+
+* More documentation
+* Dependencies (imports)
+* Namespaces (exports)
 * Sharing your package
 
 ---
 
-## Data & examples
+## More documentation
 
-...
+Use `roxygen2` tags (`@param`, `@return`,...) to add sections beyond the 3 basic blocks
+
+Some standard sections for function definitions:
+
+* Descriptions of the **Arguments** (`@param`)
+* Description of the return **Value** (`@return`)
+* References to related functions, **See Also** (`@seealso`)
+* **Examples** of use (`@examples`)
 
 ---
 
-## Vignettes
+## More documentation
 
-...
+```{r eval=FALSE}
+#' Resampling
+#'
+#' @param x   A vector of elements from which to sample.
+#' @param ... Further arguments passed to \code{sample}.
+#'
+#' @return A vector of elements drawn from \code{x}.
+#'
+#' @seealso \code{\link[base]{sample}}
+#'
+#' @examples
+#' resample(5:10)  # same as sample(5:10)
+#' resample(5)     # NOT the same as sample(5)
+resample <- function(x, ...)
+    x[sample.int(length(x), ...)]
+```
 
 ---
 
-## Testing
+## Checking your examples
 
+Use `run_examples()` to verify your examples work
+
+---
+
+## Dependencies
+
+> - Never use `library()` or `require()` or `source()` in package code
+
+> - Invoke functions from other packages using `package::function()`
+
+> - List all such external packages under `Imports` in the `DESCRIPTION`  
+Easy way: `use_package("package")`  
+This will ensure these packages are installed when your own one is
+
+> - If the package is not very essential, list under `Suggests` instead  
+Easy way: `use_package("package", "Suggests")`  
+This doesn't force users to install it, but alerts them to extra functionality
+if they do
+
+---
+
+## Dependencies
+
+R code:
+```{r eval=FALSE}
+#' Plot Error Bars and Confidence Intervals
+plotCI <- function(..., sfrac = 0,     gap = 0,   pch = 19)
+    gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch)
+```
+
+Declare dependency:
+```{r eval=FALSE}
+use_package("gplots")
+```
+
+`DESCRIPTION` now says:
+```
+Package: mypackage
+Title: This is my first R package
 ...
+Imports: gplots
+```
+
+---
+
+## Visibility to end users
+
+`NAMESPACE` defines which functions will be available to users of the package
+
+The default is:
+```
+exportPattern("^[^\\.]")
+```
+
+i.e. all functions except those with names starting with a period (`.`)
+
+---
+
+## Visibility to end users
+
+Typically only want to provide a few high-level functions to users.
+
+Use the `@export` tag to mark these:
+
+```{r eval=FALSE}
+#' @export
+resample <- function(x, ...)
+    x[sample.int(length(x), ...)]
+```
+
+Running `document()` will create appropriate entries in `NAMESPACE`:
+```
+export(resample)
+```
+
+(NOTE: this overrides the permissive default!)
 
 ---
 
 ## Sharing your R package
 
-* What to do before sharing
-* Where to share
-* How to share
-* GitHub
-* CRAN
+Some options (in order of accessibility):
+
+* Submit to the [Comprehensive R Archive Network (CRAN)][cran]
+* Push to [GitHub][github]
+* Post on a website
+* Send directly to colleagues
+
+[cran]: https://cran.r-project.org/
+[github]: https://github.com/
 
 ---
 
-## Managing R packages (yours or others)
+## [GitHub](https://github.com/)
 
-* Installing packages
-* Finding all dependencies and installing them
-* Upgrading packages
-* Upgrading all packages after a major R upgrade
-* Viewing man pages for packages
+A de facto modern standard (after CRAN...)
+
+* Nice website
+* Easy access/distribution (`install_github()` using `devtools`)
+* Easy collaboration
+* Version control
+* Integrated into RStudio
+* Free
+
+Would need to learn [Git](https://git-scm.com/)...but you should anyway!
+
+Alternatives: [GitLab](https://about.gitlab.com/), [Bitbucket](https://bitbucket.org/)
+
+---
+
+## Sharing as a file
+
+Easiest options:
+
+* Simply zip up your package folder ('source' package)
+* `build("mypackage")` ('bundled' package)
+
+Then send to colleagues, post on websites, etc.
+
+---
+
+## Tidying up before sharing
+
+Consider the following:
+
+* [Author list][author]
+- [Version number][version]
+- [Software licence][licence]
+* [Add a `README.md`][readme]
+
+[author]: http://r-pkgs.had.co.nz/description.html#author
+[version]: http://r-pkgs.had.co.nz/description.html#version
+[licence]: http://r-pkgs.had.co.nz/description.html#license
+[readme]: http://r-pkgs.had.co.nz/release.html#readme
+
+---
+
+## Some topics not covered today
+
+* Dealing with more complex objects: classes, methods, etc.
+* [Types of packages](http://r-pkgs.had.co.nz/package.html#package)
+  (source, bundled, binary, etc.)
+* [Namespace imports](http://r-pkgs.had.co.nz/namespace.html#imports)
+* [Text formatting](http://r-pkgs.had.co.nz/man.html#text-formatting) in
+  documentation
+* [Automated testing](http://r-pkgs.had.co.nz/tests.html)
+* [Including data](http://r-pkgs.had.co.nz/data.html)
+* [Including C and C++ code](http://r-pkgs.had.co.nz/src.html)
+* [Writing 'vignettes'](http://r-pkgs.had.co.nz/vignettes.html)
+  (longer guides & tutorials)
+* [Submitting packages to CRAN](http://r-pkgs.had.co.nz/release.html)
+* Using [RStudio](https://www.rstudio.com/)
+
+See [Hadley Wickham's guide][hadley] for more details
+
+[hadley]: http://r-pkgs.had.co.nz/
+
+---
+
+## The complete workflow
+
+1. `create()`
+2. Write code, `load_all()`, fix & repeat
+3. Write `roxygen2` comments, `document()`, fix & repeat
+4. (Write tests, `test()`, fix & repeat)
+5. (Include data, `load_all()`, fix & repeat)
+6. (Write vignettes)
+7. Check NAMESPACE is correct, `document()`, fix & repeat
+8. Run `check()`, fix & repeat
+9. Update `DESCRIPTION` (e.g. new version number)
+10. Final `check()`
+11. Release (GitHub, CRAN, ...)
+12. Publicise!
+
+---
+
+## Organising your code
+
+Package up your code in a way that best promotes re-use:
+
+> - Generic but frequently used code  
+--> personal/miscellaneous utility package  
+Examples: `gplots`, `Hmisc`, `rafalib`
+
+> - Standalone utility code specific to a context (e.g. data parsing)  
+--> specific utility package  
+Examples: `devtools`, `ggplot2`, `data.table`, `stringr`
+
+> - General modelling code  
+--> modelling package  
+Examples: `randomForest`, `lme4`, `forecast`
+
+> - Project code  
+--> project package
+
+---
+
+## Managing R packages
+
+* Installing
+* Upgrading
+* Finding and installing dependencies
+* Re-installing packages after a major R upgrade
+* Where are R packages installed?
 
 ---
 
 ## Installing packages
 
-- Locally (e.g. your own)
-- From CRAN
-* `install.packages()` or `R CMD INSTALL` or `install_*` (`devtools`)
-- From GitHub
+Source            | With `devtools`                      | Traditional way
+----------------- | ------------------------------------ | -----------------------------
+Local file/folder | `install("package")`                 | `R CMD INSTALL package`
+CRAN              | `install_cran("package")`            | `install.packages("package")`
+GitHub            | `install_github("username/package")` |
+Other             | `install_*()` functions              |
 
 ---
 
-## Finding all dependencies and installing them
+## Installing packages
 
-- `reinstallr()`
+To ensure you have the latest version of all dependencies for a package, install using:
 
----
-
-## Upgrading packages
-
-* `update.packages()`
-* `reinstallr` package
+```{r eval=FALSE}
+library(devtools)
+update_packages("package")
+```
 
 ---
 
-## Upgrading all packages after a major R upgrade (CRAN packages only)
+## Upgrading (all) packages
 
-- `update.packages(checkBuilt=TRUE, ask=FALSE)`
+Quick and easy:
+`update_packages()` from `devtools`
 
----
-
-## Viewing man pages for packages
-
-...
+For more fine-grained control:
+`update.packages()`
 
 ---
 
-## Tips for using RStudio and packages
+## Finding and installing dependencies
 
-* <https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development>
+You have a folder full of **scripts**, each depending on various packages
+
+Use the `reinstallr` package to install them all:
+
+```{r eval=FALSE}
+library(reinstallr)
+reinstallr("path/to/folder")
+```
+
+---
+
+## Re-installing packages after a major R upgrade
+
+You've done an R upgrade and all of your packages are missing?
+
+Re-install them (CRAN packages only) by running:
+
+```{r eval=FALSE}
+update.packages(checkBuilt = TRUE, ask = FALSE)
+```
+
+---
+
+## Where are R packages installed?
+
+A 'library' is a folder for storing installed packages
+
+```{r}
+.libPaths()
+```
+
+This command is sometimes useful for debugging your R installation
+
+---
+
+## General advice
+
+Start slowly
+
+Don't need to learn everything at once
 
 ---
 
 ## More info
 
+Quick start:
+
 * [Writing an R package from scratch][hilary], Hilary Parker
-* [R packages][hadley], Hadley Wickham *(read this!)*
+
+Modern guides:
+
+* [R packages][hadley], Hadley Wickham **(read this!)**
+* [Package Development Cheat Sheet][devcheat] for `devtools` & RStudio
+
+Older guides:
+
 * [R package primer][broman], Karl Broman
-* [Writing R Extensions][R-exts], R Core Team **(best to avoid...)**
+* [Writing R Extensions][R-exts], R Core Team **(for experts only...)**
 
 [hilary]: https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
 [broman]: http://kbroman.org/pkg_primer/
 [hadley]: http://r-pkgs.had.co.nz/
 [R-exts]: https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+[devcheat]: https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf
 
-## Useful packages
+---
+
+## More info
+
+Tips for using RStudio:
+
+* [Package Development support pages][rstudio-pkg-dev]
+* [Package Development Cheat Sheet][devcheat]
+
+[rstudio-pkg-dev]: https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development
+[devcheat]: https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf
+
+Useful packages:
 
 * [devtools](https://github.com/hadley/devtools)
 * [reinstallr](https://github.com/calligross/reinstallr)
 * [installr](https://github.com/talgalili/installr/) (Windows only)
+
+---
+
+## More info
+
+(Add links to this presentation, my contact details, etc.)
+
+TODO

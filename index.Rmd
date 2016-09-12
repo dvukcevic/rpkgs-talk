@@ -301,9 +301,9 @@ Place comments directly above your code
 
 Use ``#` `` instead of `#`
 
-3 blocks of text: Title, Description, Details
+Write 3 blocks of text: Title, Description, Details
 
-Document everything (functions, data, classes, methods,...)
+Include the `@export` tag (will explain later...)
 
 ---
 
@@ -318,6 +318,8 @@ Document everything (functions, data, classes, methods,...)
 #' always interprets the first argument as the set of elements to sample from,
 #' even when it is of length 1.  This consistency makes it more suitable for
 #' programmatic use.
+#'
+#' @export
 resample <- function(x, ...)
     x[sample.int(length(x), ...)]
 ```
@@ -447,20 +449,18 @@ Imports: gplots
 
 `NAMESPACE` defines which functions will be available to users of the package
 
-The default is:
-```
-exportPattern("^[^\\.]")
-```
+Typically best to only expose the 'high-level' functions
 
-i.e. all functions except those with names starting with a period (`.`)
+Workflow:
+
+1. Mark such functions with the `@export` tag
+2. Use `document()` to automatically create `NAMESPACE`
 
 ---
 
 ## Visibility to end users
 
-Typically only want to provide a few high-level functions to users.
-
-Use the `@export` tag to mark these:
+Edit code to add the `@export` tag:
 
 ```{r eval=FALSE}
 #' @export
@@ -468,12 +468,17 @@ resample <- function(x, ...)
     x[sample.int(length(x), ...)]
 ```
 
-Running `document()` will create appropriate entries in `NAMESPACE`:
-```
-export(resample)
+In an R session, run:
+
+```{r eval=FALSE}
+document("mypackage")
 ```
 
-(NOTE: this overrides the permissive default!)
+The `NAMESPACE` now says:
+
+```{r eval=FALSE}
+export(resample)
+```
 
 ---
 

@@ -9,6 +9,7 @@ hitheme     : tomorrow      #
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+license     : by-sa
 --- .segue .quote
 
 Hilary Parker:

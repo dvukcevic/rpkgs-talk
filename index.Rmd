@@ -818,8 +818,8 @@ Tips for using RStudio:
 * [Package Development Cheat Sheet][devcheat]
 * Some keyboard shortcuts:
 
-    - `Ctrl/Cmd + Shift + L` invokes `load_all()`
-    - `Ctrl/Cmd + Shift + D` invokes `document()`
+    - **Ctrl/Cmd + Shift + L** invokes `load_all()`
+    - **Ctrl/Cmd + Shift + D** invokes `document()`
 
 [rstudio-pkg-dev]: https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development
 [devcheat]: https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf

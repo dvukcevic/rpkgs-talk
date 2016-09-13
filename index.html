@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Writing and managing R packages</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Writing and managing R packages">
+  <meta name="author" content="Damjan Vukcevic">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/monokai.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/damjan.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/Rlogo_scaled.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Writing and managing R packages</h1>
+    <h2>13 Sep 2016, Melbourne Users of R Network (MelbURN)</h2>
+    <p>Damjan Vukcevic<br/>Statistician &amp; data scientist</p>
+  </hgroup>
+  <article></article>  
+  <footer class = 'license'>
+    <a href='http://creativecommons.org/licenses/by-sa/4.0/'>
+    <img width = '80px' src = 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png'>
+    </a>
+  </footer>
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue quote" id="slide-1" style="background:;">
+  <article data-timings="">
+    <p>Hilary Parker:</p>
+
+<p><q>I really should just make an R package with these functions so I don&#39;t have
+to keep copy/pasting them like a goddamn luddite.</q></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>What is an R package?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>&quot;Packages are the fundamental units of reproducible R code.&quot; (Hadley Wickham)</p>
+
+<p>&quot;R packages are the best way to distribute R code and documentation...&quot; (Karl
+Broman)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Why R packages?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Save time</p>
+
+<ul>
+<li>Follow conventions, avoid having to think about &#39;plumbing&#39;</li>
+<li>Quick &amp; easy re-use</li>
+<li>Quick &amp; easy sharing</li>
+</ul></li>
+<li><p>Better code</p>
+
+<ul>
+<li>Easier check &amp; test</li>
+<li>Easier to document</li>
+<li>Tidier namespaces</li>
+</ul></li>
+<li><p>Easy to create</p></li>
+<li><p>Helpful even when writing code just for yourself</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>General advice</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Start slowly</p>
+
+<p>Don&#39;t need to learn everything at once</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Overview</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><p>Your first R package</p></li>
+<li><p>Efficient workflow</p></li>
+<li><p>Improving and sharing your package</p></li>
+<li><p>Managing packages</p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2><code>functions.R</code>, the poor man&#39;s R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><p>Place function definitions in a file called <code>functions.R</code></p></li>
+<li><p>Load this in other scripts using <code>source(&quot;function.R&quot;)</code></p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Examples</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>In <code>functions.R</code>:</p>
+
+<pre><code># Calculate the square of x.
+square &lt;- function(x)
+    x^2
+</code></pre>
+
+<p class='tight'>In your R session:</p>
+
+<pre><code class="r">source(&quot;functions.R&quot;)
+square(1:3)
+</code></pre>
+
+<pre><code>## [1] 1 4 9
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Examples</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>In <code>functions.R</code>:</p>
+
+<pre><code class="r"># Resample values from a given vector.
+resample &lt;- function(x, ...)
+    x[sample.int(length(x), ...)]
+</code></pre>
+
+<p class='tight'>In your R session:</p>
+
+<pre><code class="r">source(&quot;functions.R&quot;)
+resample(letters[1:10])
+</code></pre>
+
+<pre><code>##  [1] &quot;h&quot; &quot;j&quot; &quot;b&quot; &quot;c&quot; &quot;e&quot; &quot;g&quot; &quot;a&quot; &quot;i&quot; &quot;f&quot; &quot;d&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Create folder structure</p>
+
+<pre><code>mypackage/
+└── R/
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Move <code>functions.R</code> into the <code>R</code> subfolder</p>
+
+<pre><code>mypackage/
+└── R/
+    └── functions.R
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Create the <code>DESCRIPTION</code> and <code>NAMESPACE</code> files</p>
+
+<pre><code>mypackage/
+├── R/
+│   └── functions.R
+├── DESCRIPTION
+└── NAMESPACE
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Your <code>DESCRIPTION</code> file should look similar to:</p>
+
+<pre><code>Package: mypackage
+Title: This is my first R package
+Description: This package was created as a way to learn how to write R
+    packages. It contains various helper functions and variable definitions.
+Authors@R: person(&quot;First&quot;, &quot;Last&quot;, email = &quot;first.last@example.com&quot;,
+                  role = c(&quot;aut&quot;, &quot;cre&quot;))
+Version: 0.1
+Depends: R (&gt;= 3.3.1)
+License: GPL-3
+LazyData: true
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Your <code>NAMESPACE</code> file should look like:</p>
+
+<pre><code># Export all names
+exportPattern(&quot;.&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>Install your package:</p>
+
+<pre><code>R CMD INSTALL mypackage
+</code></pre>
+
+<p class='tight'>(Run this on the command line, from the folder one level above <code>mypackage</code>)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Use your new package in R:</p>
+
+<pre><code class="r">library(mypackage)
+square(1:3)
+</code></pre>
+
+<pre><code>## [1] 1 4 9
+</code></pre>
+
+<pre><code class="r">resample(letters[1:10])
+</code></pre>
+
+<pre><code>##  [1] &quot;e&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;d&quot; &quot;c&quot; &quot;a&quot; &quot;b&quot; &quot;f&quot; &quot;g&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Your first R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Can split up your code into any number of <code>.R</code> files</p>
+
+<pre><code>mypackage/
+├── R/
+│   ├── resample.R
+│   └── square.R
+├── DESCRIPTION
+└── NAMESPACE
+</code></pre>
+
+<p class='tight'>All <code>.R</code> files within the <code>R</code> subfolder will automatically be included
+in your package</p>
+
+<p>(More convenient than if <code>source()</code>-ing)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Benefits of packages (vs <code>functions.R</code>)</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Easier to re-use</li>
+<li>Easier to share</li>
+<li>Easier to maintain as complexity increases</li>
+<li>Better documentation</li>
+<li>Cleaner project code</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Modern development toolkit</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>devtools</code>: Hadley Wickham&#39;s R package for &#39;painless package development&#39;</li>
+<li><code>roxygen2</code>: In-source documentation system</li>
+<li><code>testthat</code>: &#39;Tools to make testing fun :)&#39;</li>
+<li><code>knitr</code>: Dynamic report generation</li>
+</ul>
+
+<p><strong>Highly recommended!</strong></p>
+
+<p class='tight'>Grab the whole kit:</p>
+
+<pre><code class="r">install.packages(c(&quot;devtools&quot;, &quot;roxygen2&quot;, &quot;testthat&quot;, &quot;knitr&quot;))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Using <code>devtools</code></h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>Starting a new package:</p>
+
+<pre><code class="r">library(devtools)
+create(&quot;mypackage&quot;)
+</code></pre>
+
+<p class='tight'>This sets up the basic folder structure and files (<code>DESCRIPTION</code>, etc.)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Workflow comparison</h2>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th></th>
+<th>Old way</th>
+<th>New way</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Development</td>
+<td><code>source(&quot;functions.R&quot;)</code></td>
+<td><code>load_all(&quot;mypackage&quot;)</code></td>
+</tr>
+<tr>
+<td>Use</td>
+<td><code>source(&quot;functions.R&quot;)</code></td>
+<td><code>library(&quot;mypackage&quot;)</code></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Development workflow</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><p>Edit code in <code>R</code> subfolder</p></li>
+<li><p>In an R session:</p>
+
+<p>(a) <code>load_all(&quot;mypackage&quot;)</code></p>
+
+<p>(b) Test out your functions</p></li>
+<li><p>Repeat until happy</p></li>
+<li><p><code>install(&quot;mypackage&quot;)</code></p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Documentation</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>Help pages are accessed by using <code>?</code> or  <code>help()</code></p></li>
+<li><p>For example: <code>?read.table</code></p></li>
+<li><p>R packages should provide help pages as well as code</p></li>
+<li><p>R packages follow specific conventions for documentation.  These used to be
+difficult to follow</p></li>
+<li><p><code>roxygen2</code> allows you to write documentation as <em>inline comments</em> in your
+<code>.R</code> files</p></li>
+<li><p><code>devtools</code> makes the whole process easy</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Writing basic <code>roxygen2</code> comments</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>Place comments directly above your code</p></li>
+<li><p>Use <code>#`</code> instead of <code>#</code></p></li>
+<li><p>First 3 blocks of text: <strong>Title</strong>, <strong>Description</strong>, <strong>Details</strong></p></li>
+<li><p>Include the <code>@export</code> tag (will explain later...)</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">#&#39; Resampling
+#&#39;
+#&#39; \code{resample} takes a random sample from a given vector.
+#&#39;
+#&#39; This function is an alternative to \code{sample}.  Unlike the latter, it
+#&#39; always interprets the first argument as the set of elements to sample from,
+#&#39; even when it is of length 1.  This consistency makes it more suitable for
+#&#39; programmatic use.
+#&#39;
+#&#39; @export
+resample &lt;- function(x, ...)
+    x[sample.int(length(x), ...)]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>Example output</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="manpage1.png" alt="Screenshot of man page"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Documentation workflow</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><p>Edit <code>roxygen2</code> comments</p></li>
+<li><p>In an R session:</p>
+
+<p>(a) <code>document(&quot;mypackage&quot;)</code></p>
+
+<p>(b) Inspect help pages using <code>?</code></p></li>
+<li><p>Repeat until happy</p></li>
+<li><p><code>install(&quot;mypackage&quot;)</code></p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Tips</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Remember to run <code>library(devtools)</code> before doing any development.</p>
+
+<p class='tight'>Hadley recommends adding it to your startup file (<code>.Rprofile</code>):</p>
+
+<pre><code class="r">if (interactive())
+    suppressMessages(require(devtools))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>Next steps</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>More documentation</p></li>
+<li><p>Dependencies (imports)</p></li>
+<li><p>Namespaces (exports)</p></li>
+<li><p>Sharing your package</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-29" style="background:;">
+  <hgroup>
+    <h2>More documentation</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Use <code>roxygen2</code> tags (<code>@param</code>, <code>@return</code>,...) to add sections beyond the 3 basic blocks</p>
+
+<p>Some standard sections for function definitions:</p>
+
+<ul>
+<li>Descriptions of the <strong>Arguments</strong> (<code>@param</code>)</li>
+<li>Description of the return <strong>Value</strong> (<code>@return</code>)</li>
+<li>References to related functions, <strong>See Also</strong> (<code>@seealso</code>)</li>
+<li><strong>Examples</strong> of use (<code>@examples</code>)</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-30" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">#&#39; Resampling
+#&#39;
+#&#39; \code{resample} takes a random sample from a given vector.
+#&#39;
+#&#39; @export
+#&#39; @param x   A vector of elements from which to sample.
+#&#39; @param ... Further arguments passed to \code{sample}.
+#&#39; @return A vector of elements drawn from \code{x}.
+#&#39;
+#&#39; @seealso \code{\link[base]{sample}}
+#&#39;
+#&#39; @examples
+#&#39; resample(5:10)  # same as sample(5:10)
+#&#39; resample(5)     # NOT the same as sample(5)
+resample &lt;- function(x, ...)
+    x[sample.int(length(x), ...)]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-31" style="background:;">
+  <hgroup>
+    <h2>Example output</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="manpage2.png" alt="Screenshot of man page"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-32" style="background:;">
+  <hgroup>
+    <h2>Checking your examples</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Use <code>run_examples()</code> to verify that your examples work</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <h2>Examples example</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">&gt; library(devtools)
+&gt; run_examples(&quot;mypackage&quot;)
+Updating mypackage documentation
+Loading mypackage
+Writing resample.Rd
+Running 3 example files in mypackage ------------------------------
+Loading mypackage
+Running examples in resample.Rd -----------------------------------
+&gt; 
+&gt; resample(5:10)  # same as sample(5:10)
+[1]  5  9  6 10  8  7
+&gt; resample(5)     # NOT the same as sample(5)
+[1] 5
+Loading mypackage
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-34" style="background:;">
+  <hgroup>
+    <h2>Dependencies</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>Never use <code>library()</code> or <code>require()</code> or <code>source()</code> in package code</p></li>
+<li><p>Invoke functions from other packages using <code>package::function()</code></p></li>
+<li><p>List all such external packages in the <code>Imports</code> section of the
+<code>DESCRIPTION</code> file</p></li>
+<li><p>This will ensure these packages are installed along with
+your package</p></li>
+<li><p>Easy way: run <code>use_package(&quot;package&quot;)</code> in your R session</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-35" style="background:;">
+  <hgroup>
+    <h2>Dependencies</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>Write R code:</p>
+
+<pre><code class="r">#&#39; Plot Error Bars and Confidence Intervals
+plotCI &lt;- function(..., sfrac = 0, gap = 0, pch = 19, col = &quot;blue&quot;)
+    gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch, col = col)
+</code></pre>
+
+<p class='tight'>In an R session, declare the dependency:</p>
+
+<pre><code class="r">use_package(&quot;gplots&quot;)
+</code></pre>
+
+<p class='tight'>The <code>DESCRIPTION</code> now says:</p>
+
+<pre><code>Package: mypackage
+Title: This is my first R package
+...
+Imports: gplots
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-36" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(mypackage)
+plotCI(c(1, 3, 2, 4, 2), uiw = 2)
+</code></pre>
+
+<p><img src="assets/fig/plotCI-1-1.png" title="plot of chunk plotCI-1" alt="plot of chunk plotCI-1" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-37" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(gplots, warn.conflicts = FALSE)
+plotCI(c(1, 3, 2, 4, 2), uiw = 2)
+</code></pre>
+
+<p><img src="assets/fig/plotCI-2-1.png" title="plot of chunk plotCI-2" alt="plot of chunk plotCI-2" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-38" style="background:;">
+  <hgroup>
+    <h2>Visibility to end users</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p><code>NAMESPACE</code> defines which functions will be available to users of the package</p></li>
+<li><p>Typically best to only expose the &#39;high-level&#39; functions</p></li>
+<li><p>This is called &#39;exporting&#39; the function</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-39" style="background:;">
+  <hgroup>
+    <h2>Visibility to end users</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Workflow:</p>
+
+<ol>
+<li><p>Add the <code>@export</code> tag to desired functions</p></li>
+<li><p>Use <code>document()</code> to automatically create <code>NAMESPACE</code></p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-40" style="background:;">
+  <hgroup>
+    <h2>Visibility to end users</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>Edit code to add the <code>@export</code> tag:</p>
+
+<pre><code class="r">#&#39; @export
+resample &lt;- function(x, ...)
+    x[sample.int(length(x), ...)]
+</code></pre>
+
+<p class='tight'>In an R session, run:</p>
+
+<pre><code class="r">document(&quot;mypackage&quot;)
+</code></pre>
+
+<p class='tight'>The <code>NAMESPACE</code> now says:</p>
+
+<pre><code class="r">export(resample)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-41" style="background:;">
+  <hgroup>
+    <h2>Sharing your R package</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Some options (in order of accessibility):</p>
+
+<ul>
+<li>Submit to the <a href="https://cran.r-project.org/">Comprehensive R Archive Network (CRAN)</a></li>
+<li>Push to <a href="https://github.com/">GitHub</a></li>
+<li>Post on a website</li>
+<li>Send directly to colleagues</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-42" style="background:;">
+  <hgroup>
+    <h2><a href="https://github.com/">GitHub</a></h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A de facto modern standard (after CRAN...)</p>
+
+<ul>
+<li>Nice website</li>
+<li>Easy access/distribution (<code>install_github()</code> using <code>devtools</code>)</li>
+<li>Easy collaboration</li>
+<li>Version control</li>
+<li>Integrated into RStudio</li>
+<li>Free</li>
+</ul>
+
+<p>Would need to learn <a href="https://git-scm.com/">Git</a>...but you should anyway!</p>
+
+<p>Alternatives: <a href="https://about.gitlab.com/">GitLab</a>, <a href="https://bitbucket.org/">Bitbucket</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-43" style="background:;">
+  <hgroup>
+    <h2>Sharing as a file</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Easiest options:</p>
+
+<ul>
+<li>Zip up your package folder (&#39;source&#39; package)</li>
+<li><code>build(&quot;mypackage&quot;)</code> (&#39;bundled&#39; package)</li>
+</ul>
+
+<p>Then send to colleagues, post on websites, etc.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-44" style="background:;">
+  <hgroup>
+    <h2>Tidying up before sharing</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Consider the following:</p>
+
+<ul>
+<li><a href="http://r-pkgs.had.co.nz/description.html#author">Author list</a></li>
+<li><a href="http://r-pkgs.had.co.nz/description.html#version">Version number</a></li>
+<li><a href="http://r-pkgs.had.co.nz/description.html#license">Software licence</a></li>
+<li><a href="http://r-pkgs.had.co.nz/release.html#readme">Add a <code>README.md</code></a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-45" style="background:;">
+  <hgroup>
+    <h2>Topics not covered today</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Dealing with more complex objects: classes, methods, etc.</li>
+<li><a href="http://r-pkgs.had.co.nz/package.html#package">Types of packages</a>
+(source, bundled, binary,...)</li>
+<li><a href="http://r-pkgs.had.co.nz/description.html#dependencies">Types of dependencies</a>
+(Imports, Suggests, Depends,...)</li>
+<li><a href="http://r-pkgs.had.co.nz/namespace.html#imports">Namespace imports</a></li>
+<li><a href="http://r-pkgs.had.co.nz/man.html#text-formatting">Text formatting</a> in
+documentation</li>
+<li><a href="http://r-pkgs.had.co.nz/tests.html">Automated testing</a></li>
+<li><a href="http://r-pkgs.had.co.nz/data.html">Including data</a></li>
+<li><a href="http://r-pkgs.had.co.nz/src.html">Including C and C++ code</a></li>
+<li><a href="http://r-pkgs.had.co.nz/vignettes.html">Writing &#39;vignettes&#39;</a>
+(longer guides &amp; tutorials)</li>
+<li><a href="http://r-pkgs.had.co.nz/release.html">Submitting packages to CRAN</a></li>
+<li>Using <a href="https://www.rstudio.com/">RStudio</a></li>
+</ul>
+
+<p>See <a href="http://r-pkgs.had.co.nz/">Hadley Wickham&#39;s guide</a> for more details</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-46" style="background:;">
+  <hgroup>
+    <h2>A complete workflow</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><code>create()</code></li>
+<li>Write code, <code>load_all()</code>, fix &amp; repeat</li>
+<li>Write <code>roxygen2</code> comments, <code>document()</code>, fix &amp; repeat</li>
+<li>(Write tests, <code>test()</code>, fix &amp; repeat)</li>
+<li>(Include data, <code>load_all()</code>, fix &amp; repeat)</li>
+<li>(Write vignettes)</li>
+<li>Check NAMESPACE is correct, <code>document()</code>, fix &amp; repeat</li>
+<li>Run <code>check()</code>, fix &amp; repeat</li>
+<li>Update <code>DESCRIPTION</code> (e.g. new version number)</li>
+<li>Final <code>check()</code></li>
+<li>Release (GitHub, CRAN, ...)</li>
+<li>Publicise!</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-47" style="background:;">
+  <hgroup>
+    <h2>Organising your code</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Package up your code in a way that best promotes re-use:</p>
+
+<ul class = "build incremental">
+<li><p>Generic but frequently used code<br>
+→ <strong>Personal/miscellaneous utility package</strong><br>
+Examples: <code>gplots</code>, <code>Hmisc</code>, <code>rafalib</code></p></li>
+<li><p>Standalone utility code specific to a context (e.g. data parsing)<br>
+→ <strong>Specific utility package</strong><br>
+Examples: <code>devtools</code>, <code>ggplot2</code>, <code>data.table</code>, <code>stringr</code></p></li>
+<li><p>General modelling code<br>
+→ <strong>Modelling package</strong><br>
+Examples: <code>randomForest</code>, <code>lme4</code>, <code>forecast</code></p></li>
+<li><p>Project code<br>
+→ <strong>Project package</strong></p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-48" style="background:;">
+  <hgroup>
+    <h2>Managing R packages</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Installing</p></li>
+<li><p>Upgrading</p></li>
+<li><p>Finding and installing dependencies</p></li>
+<li><p>Re-installing packages after a major R upgrade</p></li>
+<li><p>Where are R packages installed?</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-49" style="background:;">
+  <hgroup>
+    <h2>Installing packages</h2>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Source</th>
+<th>With <code>devtools</code></th>
+<th>Traditional way</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Local file/folder</td>
+<td><code>install(&quot;package&quot;)</code></td>
+<td><code>R CMD INSTALL package</code></td>
+</tr>
+<tr>
+<td>CRAN</td>
+<td><code>install_cran(&quot;package&quot;)</code></td>
+<td><code>install.packages(&quot;package&quot;)</code></td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td><code>install_github(&quot;username/package&quot;)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Other</td>
+<td><code>install_*()</code> functions</td>
+<td></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-50" style="background:;">
+  <hgroup>
+    <h2>Installing packages</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>To ensure you have the latest version of all dependencies for a package,
+install using:</p>
+
+<pre><code class="r">library(devtools)
+update_packages(&quot;package&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-51" style="background:;">
+  <hgroup>
+    <h2>Upgrading (all) packages</h2>
+  </hgroup>
+  <article data-timings="">
+    <p class='tight'>Quick and easy:</p>
+
+<pre><code class="r">library(devtools)
+update_packages()
+</code></pre>
+
+<p class='tight'>For more fine-grained control:</p>
+
+<pre><code class="r">update.packages()
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-52" style="background:;">
+  <hgroup>
+    <h2>Finding and installing dependencies</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>You have a folder full of <strong>scripts</strong>, each depending on various packages</p>
+
+<p class='tight'>Use the <code>reinstallr</code> package to install them all:</p>
+
+<pre><code class="r">library(reinstallr)
+reinstallr(&quot;path/to/folder&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-53" style="background:;">
+  <hgroup>
+    <h2>Re-installing packages after a major R upgrade</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>You&#39;ve done an R upgrade and all of your packages are missing?</p>
+
+<p class='tight'>Re-install them (CRAN packages only) by running:</p>
+
+<pre><code class="r">update.packages(checkBuilt = TRUE, ask = FALSE)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-54" style="background:;">
+  <hgroup>
+    <h2>Where are R packages installed?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A <strong>library</strong> is a folder for storing installed packages</p>
+
+<pre><code class="r">.libPaths()
+</code></pre>
+
+<pre><code>## [1] &quot;/home/damjan/R/x86_64-pc-linux-gnu-library/3.3&quot;
+## [2] &quot;/usr/local/lib/R/site-library&quot;                 
+## [3] &quot;/usr/lib/R/site-library&quot;                       
+## [4] &quot;/usr/lib/R/library&quot;
+</code></pre>
+
+<p class='tight'>This can be useful for debugging your R installation</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-55" style="background:;">
+  <hgroup>
+    <h2>General advice</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Start slowly</p>
+
+<p>Don&#39;t need to learn everything at once</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-56" style="background:;">
+  <hgroup>
+    <h2>More info</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Quick start</h3>
+
+<ul>
+<li><a href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/">Writing an R package from scratch</a>, Hilary Parker</li>
+</ul>
+
+<h3>Modern guides</h3>
+
+<ul>
+<li><a href="http://r-pkgs.had.co.nz/">R packages</a>, Hadley Wickham <strong>(read this!)</strong></li>
+<li><a href="https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf">Package Development Cheat Sheet</a> for <code>devtools</code> &amp; RStudio</li>
+</ul>
+
+<h3>Older guides</h3>
+
+<ul>
+<li><a href="http://kbroman.org/pkg_primer/">R package primer</a>, Karl Broman</li>
+<li><a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">Writing R Extensions</a>, R Core Team <strong>(for experts only...)</strong></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-57" style="background:;">
+  <hgroup>
+    <h2>More info</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Tips for using RStudio</h3>
+
+<ul>
+<li><a href="https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development">Package Development support pages</a></li>
+<li><a href="https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf">Package Development Cheat Sheet</a></li>
+<li><p>Some keyboard shortcuts:</p>
+
+<ul>
+<li><strong>Ctrl/Cmd + Shift + L</strong> invokes <code>load_all()</code></li>
+<li><strong>Ctrl/Cmd + Shift + D</strong> invokes <code>document()</code></li>
+</ul></li>
+</ul>
+
+<h3>Useful packages</h3>
+
+<ul>
+<li><a href="https://github.com/hadley/devtools">devtools</a></li>
+<li><a href="https://github.com/calligross/reinstallr">reinstallr</a></li>
+<li><a href="https://github.com/talgalili/installr/">installr</a> (Windows only)</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-58" style="background:;">
+  <hgroup>
+    <h2>More info</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Slides</h3>
+
+<p><a href="https://dvukcevic.github.io/rpkgs-talk/">https://dvukcevic.github.io/rpkgs-talk/</a></p>
+
+<h3>Contact me</h3>
+
+<p><strong>Web</strong> - <a href="http://damjan.vukcevic.net/">http://damjan.vukcevic.net/</a></p>
+
+<p><strong>Email</strong> - <a href="mailto:damjan@vukcevic.net">damjan@vukcevic.net</a></p>
+
+<p><strong>Twitter</strong> - <a href="https://twitter.com/VukcevicD">@VukcevicD</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='What is an R package?'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Why R packages?'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='General advice'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Overview'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='<code>functions.R</code>, the poor man&#39;s R package'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Examples'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Examples'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Your first R package'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Your first R package'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Your first R package'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Your first R package'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Your first R package'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Your first R package'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Your first R package'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Your first R package'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Benefits of packages (vs <code>functions.R</code>)'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Modern development toolkit'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Using <code>devtools</code>'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Workflow comparison'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Development workflow'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Documentation'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Writing basic <code>roxygen2</code> comments'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Example'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Example output'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Documentation workflow'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Tips'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Next steps'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='More documentation'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Example'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Example output'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Checking your examples'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Examples example'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Dependencies'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Dependencies'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Example'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Example'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Visibility to end users'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Visibility to end users'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Visibility to end users'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Sharing your R package'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='<a href="https://github.com/">GitHub</a>'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Sharing as a file'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Tidying up before sharing'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Topics not covered today'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='A complete workflow'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Organising your code'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Managing R packages'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Installing packages'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='Installing packages'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Upgrading (all) packages'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Finding and installing dependencies'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='Re-installing packages after a major R upgrade'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Where are R packages installed?'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='General advice'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='More info'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='More info'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='More info'>
+         58
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="./assets/js/jquery-1.7.min.js"></script>
+
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

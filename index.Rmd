@@ -484,8 +484,8 @@ your package
 
 ```{r eval=FALSE}
 #' Plot Error Bars and Confidence Intervals
-plotCI <- function(..., sfrac = 0,     gap = 0,   pch = 19)
-    gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch)
+plotCI <- function(..., sfrac = 0, gap = 0, pch = 19, col = "blue")
+    gplots::plotCI(..., sfrac = sfrac, gap = gap, pch = pch, col = col)
 ```
 
 .tight In an R session, declare the dependency:
@@ -501,6 +501,24 @@ Package: mypackage
 Title: This is my first R package
 ...
 Imports: gplots
+```
+
+---
+
+## Example
+
+```{r plotCI-1, fig.height=6, fig.align="center"}
+library(mypackage)
+plotCI(c(1, 3, 2, 4, 2), uiw = 2)
+```
+
+---
+
+## Example
+
+```{r plotCI-2, fig.height=6, fig.align="center"}
+library(gplots, warn.conflicts = FALSE)
+plotCI(c(1, 3, 2, 4, 2), uiw = 2)
 ```
 
 ---

@@ -198,6 +198,11 @@ R CMD INSTALL mypackage
 
 Use your new package in R:
 
+```{r include=FALSE}
+# Remove previous definitions to avoid messages for the next code block.
+rm(resample, square)
+```
+
 ```{r}
 library(mypackage)
 square(1:3)

@@ -4,11 +4,11 @@ subtitle    : 13 Sep 2016, Melbourne Users of R Network (MelbURN)
 author      : Damjan Vukcevic
 job         : Statistician & data scientist
 logo        : Rlogo_scaled.png
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight.js  # {highlight.js, prettify, highlight}
+framework   : io2012
+highlighter : highlight.js
 hitheme     : monokai
-widgets     : []            # {mathjax, quiz, bootstrap}
-mode        : selfcontained # {standalone, draft}
+widgets     : []
+mode        : selfcontained
 knit        : slidify::knit2slides
 license     : by-sa
 --- .segue .quote

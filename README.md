@@ -4,12 +4,12 @@ This was a talk presented by [Damjan Vukcevic](http://damjan.vukcevic.net/) on
 13 September 2016 to the Melbourne Users of R Network (MelbURN).
 
 The slides from the talk are available in the `gh-pages` branch and are hosted
-via GitHub Pages at: <https://dvukcevic.github.io/rpkgs-talk/>
+at: <https://dvukcevic.github.io/rpkgs-talk/>
 
 
 ## Details of the talk
 
-This event was organised through the MelbURN Meetup group.  See the [event
+This event was organised by the MelbURN Meetup group.  See the [event
 page][meetup] for more details.
 
 [meetup]: https://www.meetup.com/en-AU/MelbURN-Melbourne-Users-of-R-Network/events/232814895/

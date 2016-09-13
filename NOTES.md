@@ -1,6 +1,6 @@
-% Some handy references for myself
+# Some handy references
 
-# R packages
+## R packages
 
 Previous MelbURN talk about R packages:
 
@@ -15,7 +15,7 @@ Other talks about R packages:
 * <https://rpubs.com/stevenpollack/talk-r_packages>
 
 
-# Making slides with R and Markdown
+## Making slides with R and Markdown
 
 Slidify:
 

@@ -1,26 +1,20 @@
-% Writing and managing R packages
-% Damjan Vukcevic
-% 13 September 2016
+# Writing and managing R packages
 
-This repository contains the slides from my talk presented to the Melbourne
-Users of R Network (MelbURN).
+This was a talk presented by [Damjan Vukcevic](http://damjan.vukcevic.net/) on
+13 September 2016 to the Melbourne Users of R Network (MelbURN).
 
-
-# Slides
-
-These are available in the `gh-pages` branch and are hosted via GitHub Pages at the following address:
-
-<https://dvukcevic.github.io/rpkgs-talk/>
+The slides from the talk are available in the `gh-pages` branch and are hosted
+via GitHub Pages at: <https://dvukcevic.github.io/rpkgs-talk/>
 
 
-# Details of the talk
+## Details of the talk
 
 This event was organised through the MelbURN Meetup group.  See the [event
 page][meetup] for more details.
 
 [meetup]: https://www.meetup.com/en-AU/MelbURN-Melbourne-Users-of-R-Network/events/232814895/
 
-## Synopsis
+### Synopsis
 
 Do you often find yourself copying and pasting old code into new scripts? Are
 you frequently using `source()` to load shared code and wonder if there is
@@ -36,7 +30,7 @@ from using an R package. I will show you how to manage your code and
 development process easily when using R packages, and how to take advantage of
 the more advanced functionality as your project matures. 
 
-## Bio
+### Bio
 
 **Damjan Vukcevic** is a statistician and data scientist at the University of
 Melbourne and the Murdoch Childrens Research Institute (MCRI). He works on
@@ -46,7 +40,7 @@ go-to tool for statistical modelling and data analysis. He wishes someone
 introduced him to R packages many years ago.
 
 
-# Acknowledgements
+## Acknowledgements
 
 Thank you to [Hadley Wickham](http://hadley.nz/), [Karl
 Broman](http://kbroman.org/) and [Hilary Parker](https://hilaryparker.com/) for
@@ -62,7 +56,7 @@ logo](https://www.r-project.org/logo/) under a Creative Commons licence ([CC
 BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
 
 
-# Licence
+## Licence
 
 [![Creative Commons License][cc-img]][cc]  
 This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0

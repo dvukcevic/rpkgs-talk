@@ -834,6 +834,14 @@ Useful packages:
 
 ## More info
 
-(Add links to this presentation, my contact details, etc.)
+### Slides
 
-TODO
+https://dvukcevic.github.io/rpkgs-talk/
+
+### Contact me
+
+**Web** - http://damjan.vukcevic.net/
+
+**Email** - damjan@vukcevic.net
+
+**Twitter** - [@VukcevicD](https://twitter.com/VukcevicD)

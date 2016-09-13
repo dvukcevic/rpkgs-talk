@@ -788,16 +788,16 @@ Don't need to learn everything at once
 
 ## More info
 
-Quick start:
+### Quick start
 
 * [Writing an R package from scratch][hilary], Hilary Parker
 
-Modern guides:
+### Modern guides
 
 * [R packages][hadley], Hadley Wickham **(read this!)**
 * [Package Development Cheat Sheet][devcheat] for `devtools` & RStudio
 
-Older guides:
+### Older guides
 
 * [R package primer][broman], Karl Broman
 * [Writing R Extensions][R-exts], R Core Team **(for experts only...)**
@@ -812,7 +812,7 @@ Older guides:
 
 ## More info
 
-Tips for using RStudio:
+### Tips for using RStudio
 
 * [Package Development support pages][rstudio-pkg-dev]
 * [Package Development Cheat Sheet][devcheat]
@@ -824,7 +824,7 @@ Tips for using RStudio:
 [rstudio-pkg-dev]: https://support.rstudio.com/hc/en-us/sections/200130627-Package-Development
 [devcheat]: https://www.rstudio.com/wp-content/uploads/2015/06/devtools-cheatsheet.pdf
 
-Useful packages:
+### Useful packages
 
 * [devtools](https://github.com/hadley/devtools)
 * [reinstallr](https://github.com/calligross/reinstallr)

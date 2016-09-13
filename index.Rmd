@@ -11,6 +11,9 @@ widgets     : []
 mode        : selfcontained
 knit        : slidify::knit2slides
 license     : by-sa
+github      :
+  user      : dvukcevic
+  repo      : rpkgs-talk
 --- .segue .quote
 
 Hilary Parker:

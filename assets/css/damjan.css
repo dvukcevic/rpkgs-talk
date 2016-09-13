@@ -2,3 +2,12 @@
     margin-top:    1em;
     margin-bottom: 0  ;
 }
+
+/* Fix emphasis bugs in io2012
+   See: https://github.com/ramnathv/slidify/issues/224 */
+em {
+    font-style: italic
+}
+strong {
+    font-weight: bold;
+}

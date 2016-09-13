@@ -249,7 +249,7 @@ in your package
 * `testthat`: 'Tools to make testing fun :)'
 * `knitr`: Dynamic report generation
 
-Highly recommended!
+**Highly recommended!**
 
 .tight Grab the whole kit:
 
@@ -321,7 +321,7 @@ difficult to follow
 
 > - Use ``#` `` instead of `#`
 
-> - First 3 blocks of text: Title, Description, Details
+> - First 3 blocks of text: **Title**, **Description**, **Details**
 
 > - Include the `@export` tag (will explain later...)
 
@@ -653,19 +653,19 @@ See [Hadley Wickham's guide][hadley] for more details
 Package up your code in a way that best promotes re-use:
 
 > - Generic but frequently used code  
-→ Personal/miscellaneous utility package  
+→ **Personal/miscellaneous utility package**  
 Examples: `gplots`, `Hmisc`, `rafalib`
 
 > - Standalone utility code specific to a context (e.g. data parsing)  
-→ Specific utility package  
+→ **Specific utility package**  
 Examples: `devtools`, `ggplot2`, `data.table`, `stringr`
 
 > - General modelling code  
-→ Modelling package  
+→ **Modelling package**  
 Examples: `randomForest`, `lme4`, `forecast`
 
 > - Project code  
-→ Project package
+→ **Project package**
 
 ---
 
@@ -750,7 +750,7 @@ update.packages(checkBuilt = TRUE, ask = FALSE)
 
 ## Where are R packages installed?
 
-A 'library' is a folder for storing installed packages
+A **library** is a folder for storing installed packages
 
 ```{r}
 .libPaths()

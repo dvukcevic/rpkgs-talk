@@ -6,6 +6,10 @@ This was a talk presented by [Damjan Vukcevic](http://damjan.vukcevic.net/) on
 The slides from the talk are available in the `gh-pages` branch and are hosted
 at: <https://dvukcevic.github.io/rpkgs-talk/>
 
+The version in the `offline` branch is the one that was actually shown on the
+night.  The only substantive difference is that it contains no external
+dependencies (fonts, scripts, images), and is included here for reference.
+
 
 ## Details of the talk
 

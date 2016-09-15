@@ -1,5 +1,8 @@
 # Writing and managing R packages
 
+[![DOI](https://zenodo.org/badge/68067699.svg)](https://zenodo.org/badge/latestdoi/68067699)
+
+
 This was a talk presented by [Damjan Vukcevic](http://damjan.vukcevic.net/) on
 13 September 2016 to the Melbourne Users of R Network (MelbURN).
 

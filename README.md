@@ -10,8 +10,8 @@ The version in the `offline` branch is the one that was actually shown on the
 night.  The only substantive difference is that it contains no external
 dependencies (fonts, scripts, images), and is included here for reference.
 
-The example R package shown in the talk, `mypackage`, is available from GitHub
-at: <https://github.com/dvukcevic/mypackage>.
+The example R package shown in the talk is available from GitHub:
+[mypackage][mypackage].
 
 If you wish to build your own version of the slides, you will first need to
 install [mypackage][mypackage], as well as [slidify][slidify] and its
